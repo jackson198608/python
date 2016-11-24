@@ -1,0 +1,25 @@
+[stat_log]
+	数据新增进程
+
+	数据留存率进程
+
+[stat_user_rention]
+	留存率计算进程
+
+[stat_history]
+	每日统计计算进程
+
+makeNewUidInFile.py
+	生成每天新增uid的缓存文件 everyDayUids
+
+addAppIdOnUid.py
+	生成uid缓存文件对应的app id缓存文件 uidAppId
+
+readCacheFile.py
+	用于读取缓存文件，确认正确性
+
+makeNew.py
+	根据两个缓存文件以及全局变量，开始结束天偏移量，生成新增用户数据文件
+	scp到mysql对应的tmp目录下，load进去
+	startDataId 是制作数据的起始id,是从数据库中查到的最后一条
+
