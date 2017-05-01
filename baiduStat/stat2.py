@@ -5,35 +5,6 @@ import math
 import urlparse
 import time
 import cookielib
-import linecache
-import sys
-import random
-
-referPath="./refer"
-targetPath="./target"
-referUrl=""
-targetUrl=""
-
-def init():
-    #get random int
-    referIndex=random.randint(0,999)
-    targetIndex=random.randint(0,999)
-
-    #get url
-    global referPath
-    global targetPath
-    global referUrl
-    global targetUrl
-    referUrl = linecache.getline(referPath, referIndex).replace('\n','')
-    targetUrl = linecache.getline(targetPath, targetIndex).replace('\n','')
-
-    if referUrl=="" or targetUrl=="":
-        sys.exit(0)
-    print referUrl
-    print targetUrl
-
-
-
 
 ########################################################################
 class Baidu:
@@ -52,8 +23,7 @@ class Baidu:
         self.Referer=refererPage or self.Referer
         self.BaiduID=baiduID
         self.MyData['si']=self.BaiduID
-        #self.MyData['su']=urllib.quote(self.Referer)
-        self.MyData['su']=self.Referer
+        self.MyData['su']=urllib.quote(self.Referer)
         pass
     def run(self,timeout=5):
         cj=cookielib.CookieJar()
@@ -78,14 +48,9 @@ class Baidu:
 	})
 
 
-        #opener=urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-
-        opener=urllib2.build_opener(proxy_handler)
-        #urllib2.install_opener(opener)
+        opener=urllib2.build_opener(proxy_handler,urllib2.HTTPCookieProcessor(cj))  
         opener.addheaders=[("Referer",self.TargetPage),("User-Agent",self.UserAgent)]
-        #opener.addheaders = [("Proxy-Switch-Ip", "no")]
         try:
-
             response=opener.open(self.Hjs+self.BaiduID).info()
             self.MyData['rnd']=int(random.random()*2147483647 )
             self.MyData['lt']=int(time.time())
@@ -98,21 +63,17 @@ class Baidu:
             print response3
             pass
         except urllib2.HTTPError ,ex:
-            print ex.code
+            print ex.code 
             pass
         except urllib2.URLError,ex:
             print ex.reason
             pass
         pass
-
-        opener.close()
-
+    
     
     
 if  __name__ =="__main__":
-    init()
     while 1:
-        a=Baidu('ea8a600ffb76d5930a3afa6ab812f938',targetUrl,referUrl)
-        a.run(30)
-        break
+        a=Baidu('1a73c48205d8735bcdd961188af05ef8','http://www.acgkan.com/','http://www.163.com')
+        a.run()
         time.sleep(1)
